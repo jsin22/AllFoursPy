@@ -1,1 +1,3 @@
 # AllFoursPy
+
+With AI players
