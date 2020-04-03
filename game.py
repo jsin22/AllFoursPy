@@ -101,6 +101,12 @@ class Player:
     def out(self):
         return self.name + " - " + CardUtil.txt(self.currentCard)
     
+    def getBeg(self, trump):
+        print("Beg? (y): ")
+        yn = str(input())
+        return (False, True)[yn == "Y" or yn == "y"]
+
+    
     # leadCard - first card played during this play
     # trumpCard - trumpCard for this round
     # teamCard - card played by teammate in this play
@@ -416,10 +422,7 @@ class Game:
         self.teams[tIndex].score += 1
 
     def checkBeg(self):
-        player = self.players[(self.dealerIndex + 1) % self.numPlayers].name
-        print("Beg? (y): ")
-        yn = str(input())
-        return (False, True)[yn == "Y" or yn == "y"]
+        return self.players[(self.dealerIndex + 1) % self.numPlayers].getBeg(self.trumpCard)
 
     def dealBeg(self):
         #condition when there aren't enough cards to deal to everyone, so try remaining cards
