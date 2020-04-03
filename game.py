@@ -1,6 +1,8 @@
+#!/usr/bin/python3
 import random  # for shuffling
 import re # regex
 import itertools # iterate multiper lists - zip_longest
+import sys # for exit
 from os import path # for reading board file
 from os import system # for clear screen 
 
@@ -106,11 +108,11 @@ class Player:
     # teammateHand - cards your teammates have
     def playCard(self, leadCard, trumpCard, teammateCard, oppCards, teammateHand):
         def checkCard(card):
-            if leadCard == None: # first play
-                return True
-            
             if card == None:
                 return False
+
+            if leadCard == None: # first play
+                return True
 
             s = CardUtil.suit(card)
             ls = CardUtil.suit(leadCard)
@@ -123,7 +125,13 @@ class Player:
         
         def getCard():
             print("Play: ")
-            play = int(input()) 
+            try:
+                play = int(input()) 
+            except KeyboardInterrupt:
+                sys.exit(0)
+            except:
+                return None
+
             if play <= 0 or play > len(self.hand):
                 return None
 
@@ -409,7 +417,7 @@ class Game:
 
     def checkBeg(self):
         player = self.players[(self.dealerIndex + 1) % self.numPlayers].name
-        print("Beg? (y/n): ")
+        print("Beg? (y): ")
         yn = str(input())
         return (False, True)[yn == "Y" or yn == "y"]
 

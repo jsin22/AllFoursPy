@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # 0 - TwoClubs, 1 - ThreeClubs, 2 - FourClubs, 3 - FiveClubs, 4 - SixClubs,
 # 5 - SevenClubs, 6 - EightClubs, 7 - NineClubs, 8 - TenClubs, 9 - JackClubs,
 # 10 - QueenClubs, 11 - KingClubs, 12 - AceClubs, 13 - TwoDiamonds, 14 - ThreeDiamonds,
