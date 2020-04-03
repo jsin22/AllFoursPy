@@ -1,6 +1,6 @@
 S     *Scoreboard*    Team A:s     Team B:s
 T                   Trump: -            
 A1                   C                            
-B      C1              C2
+B      C1             C2
 A2                   C 
 H      

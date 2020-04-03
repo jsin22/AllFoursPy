@@ -129,7 +129,7 @@ class Player:
                 if CardUtil.suit(c) == ls:
                     return False
         
-        def getCard():
+        def getPlay():
             print("Play: ")
             try:
                 play = int(input()) 
@@ -141,17 +141,17 @@ class Player:
             if play <= 0 or play > len(self.hand):
                 return None
 
-            return self.hand.pop(play - 1)
+            return play - 1
 
         if len(self.hand) == 0:
             return None 
         
-        self.currentCard = getCard()
-        while checkCard(self.currentCard) == False:
+        play = getPlay()
+        while play == None or checkCard(self.hand[play]) == False:
             print("Bad Play! Try Again.")
-            self.currentCard = getCard()
+            play = getPlay()
 
-        print(f"played card: {self.currentCard}")
+        self.currentCard = self.hand.pop(play)
         return self.currentCard
     
     def __str__(self):
@@ -280,7 +280,8 @@ class Game:
         for i, v in enumerate(trick):
             if CardUtil.suit(v[0]) == CardUtil.suit(self.trumpCard) and CardUtil.rank(v[0]) == "Jack":
                 jackTeam = v[1]
-            elif (CardUtil.suit(v[0]) == CardUtil.suit(self.trumpCard)) and (CardUtil.rank(v[0]) == "Queen" or CardUtil.rank(v[0]) == "King" or CardUtil.rank(v[0]) == "Ace"):
+            elif (CardUtil.suit(v[0]) == CardUtil.suit(self.trumpCard)) and \
+                 (CardUtil.rank(v[0]) == "Queen" or CardUtil.rank(v[0]) == "King" or CardUtil.rank(v[0]) == "Ace"):
                 hangTeam = v[1]
         
         if jackTeam != None and hangTeam != jackTeam:
