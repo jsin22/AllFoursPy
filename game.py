@@ -3,6 +3,9 @@ import random  # for shuffling
 import re # regex
 import itertools # iterate multiper lists - zip_longest
 import sys # for exit
+import time # for sleep
+from random import randint # for selecting random card in Ai mode
+from random import choice # for selecting random beg in Ai mode
 from os import path # for reading board file
 from os import system # for clear screen 
 
@@ -87,10 +90,11 @@ class Deck:
         return string
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, ai):
         self.resetHand()
         self.name = name
         self.currentCard = None
+        self.isAi = ai
     
     def resetHand(self):
         self.hand = []
@@ -102,9 +106,17 @@ class Player:
         return self.name + " - " + CardUtil.txt(self.currentCard)
     
     def getBeg(self, trump):
-        print("Beg? (y): ")
-        yn = str(input())
-        return (False, True)[yn == "Y" or yn == "y"]
+
+        def getUserBeg():
+            print("Beg? (y): ")
+            yn = str(input())
+            return (False, True)[yn == "Y" or yn == "y"]
+
+        def getAiBeg():
+            begs = [True, False]
+            return choice(begs)
+
+        return getAiBeg() if self.isAi else getUserBeg()
 
     
     # leadCard - first card played during this play
@@ -113,6 +125,10 @@ class Player:
     # oppCards - cards played by opponents in this play
     # teammateHand - cards your teammates have
     def playCard(self, leadCard, trumpCard, teammateCard, oppCards, teammateHand):
+
+        if len(self.hand) == 0:
+            return None 
+
         def checkCard(card):
             if card == None:
                 return False
@@ -143,14 +159,23 @@ class Player:
 
             return play - 1
 
-        if len(self.hand) == 0:
-            return None 
-        
-        play = getPlay()
-        while play == None or checkCard(self.hand[play]) == False:
-            print("Bad Play! Try Again.")
+        def getUserPlay():
             play = getPlay()
+            while play == None or checkCard(self.hand[play]) == False:
+                print("Bad Play! Try Again.")
+                play = getPlay()
 
+            return play
+
+        def getAiPlay():
+            play = randint(0, len(self.hand)-1)
+            while checkCard(self.hand[play]) == False:
+                play = randint(0, len(self.hand)-1)
+
+            return play
+            
+        play = getAiPlay() if self.isAi else getUserPlay()
+        
         self.currentCard = self.hand.pop(play)
         return self.currentCard
     
@@ -163,8 +188,8 @@ class Player:
 class Team:
     def __init__(self, name):
         self.score = 0
-        self.p1 = Player(name+".1")
-        self.p2 = Player(name+".2")
+        self.p1 = Player(name+".1", True)
+        self.p2 = Player(name+".2", True)
         self.tricks = []
 
     def reset(self):
@@ -261,6 +286,7 @@ class Game:
 
             print(line)
 
+        #time.sleep(1)
         return None
 
     def dealCards(self, numCards):
