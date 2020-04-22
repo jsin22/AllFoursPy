@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import random  # for shuffling
 import re # regex
-import itertools # iterate multiper lists - zip_longest
+import itertools # iterate multiple lists - zip_longest
 import sys # for exit
 import time # for sleep
 from random import randint # for selecting random card in Ai mode
